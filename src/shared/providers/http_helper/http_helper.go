@@ -11,7 +11,7 @@ import (
 	"github.com/go-chi/chi"
 )
 
-func GetWithCtx(url string) (*http.Response, error) {
+func GetWithTimeout(url string) (*http.Response, error) {
 	ctx, execTimeOut := context.WithTimeout(context.Background(), time.Second*60)
 	defer execTimeOut()
 

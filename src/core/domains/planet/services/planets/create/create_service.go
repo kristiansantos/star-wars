@@ -52,7 +52,7 @@ func (service *Service) Execute(dto entities.PlanetCreateDto) communication.Resp
 func getFilmApparences(name string) (int, error) {
 	var baseUrl = searchUrl + name
 
-	response, _ := httphelper.GetWithCtx(baseUrl)
+	response, _ := httphelper.GetWithTimeout(baseUrl)
 
 	if response.StatusCode == 200 {
 		var ParseResp entities.FilmsResponseBody
