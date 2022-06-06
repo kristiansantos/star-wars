@@ -22,11 +22,25 @@ type Service struct {
 	Logger     logger.ILoggerProvider
 }
 
+type Dto struct {
+	Name    string `json:"name"`
+	Climate string `json:"climate"`
+	Ground  string `json:"ground"`
+}
+
+type FilmsResults struct {
+	Films []string `json:"films"`
+}
+
+type FilmsResponseBody struct {
+	Results []FilmsResults `json:"results"`
+}
+
 const (
 	searchUrl = "https://swapi.dev/api/planets/?format=json&search="
 )
 
-func (service *Service) Execute(dto entities.PlanetCreateDto) communication.Response {
+func (service *Service) Execute(dto Dto) communication.Response {
 	service.Logger.Info(Namespace.Concat("Execute"), "")
 
 	comm := communication.New()
@@ -55,7 +69,7 @@ func getFilmApparences(name string) (int, error) {
 	response, _ := httphelper.GetWithTimeout(baseUrl)
 
 	if response.StatusCode == 200 {
-		var ParseResp entities.FilmsResponseBody
+		var ParseResp FilmsResponseBody
 
 		httphelper.GetBody(response.Body, &ParseResp)
 

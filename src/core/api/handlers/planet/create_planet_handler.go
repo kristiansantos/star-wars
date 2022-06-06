@@ -3,7 +3,7 @@ package planet
 import (
 	"net/http"
 
-	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/core/domains/planet/entities"
+	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/core/domains/planet/services/planets/create"
 	httphelper "gitlab.internal.b2w.io/team/a-tech/star-wars/src/shared/providers/http_helper"
 	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/shared/tools/communication"
 )
@@ -13,7 +13,7 @@ func (handler handler) CreatePlanetHandler(r *http.Request) communication.Respon
 
 	handler.Logger.Info(Namespace.Concat("CreatePlanetHandler"), "")
 
-	var dto entities.PlanetCreateDto
+	var dto create.Dto
 
 	ctx := r.Context()
 	service := handler.Service(ctx).Create
