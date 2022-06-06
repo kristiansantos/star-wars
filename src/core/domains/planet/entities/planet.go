@@ -11,7 +11,7 @@ type Planet struct {
 	Name           string    `json:"name" bson:"name"`
 	Climate        string    `json:"climate" bson:"climate"`
 	Ground         string    `json:"ground" bson:"ground"`
-	FilmApparences string    `json:"film_apparences" bson:"film_apparences"`
+	FilmApparences int       `json:"film_apparences" bson:"film_apparences"`
 	CreatedAt      time.Time `json:"createdAt" bson:"createdAt"`
 	UpdatedAt      time.Time `json:"updatedAt" bson:"updatedAt"`
 }
