@@ -49,7 +49,7 @@ func (service *Service) Execute(dto entities.PlanetCreateDto) communication.Resp
 	return comm.Response(201, "success_create", document)
 }
 
-func getFilmApparences(name string) (apparences int, err error) {
+func getFilmApparences(name string) (int, error) {
 	var baseUrl = searchUrl + name
 
 	response, _ := httphelper.GetWithCtx(baseUrl)
