@@ -3,9 +3,7 @@ package create
 import (
 	"context"
 	"errors"
-	"net/http"
 	"strconv"
-	"time"
 
 	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/core/domains/planet/entities"
 	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/core/domains/planet/repositories"
@@ -18,27 +16,17 @@ import (
 
 var Namespace = namespace.New("core.domains.format.services.create.create_service")
 
-type Dto struct {
-	Name    string `json:"name"`
-	Climate string `json:"climate"`
-	Ground  string `json:"ground"`
-}
-
-type Results struct {
-	Films []string `json:"films"`
-}
-
-type ResponseBody struct {
-	Results []Results `json:"results"`
-}
-
 type Service struct {
 	Context    context.Context
 	Repository repositories.IPlanetRepository
 	Logger     logger.ILoggerProvider
 }
 
-func (service *Service) Execute(dto Dto) communication.Response {
+const (
+	searchUrl = "https://swapi.dev/api/planets/?format=json&search="
+)
+
+func (service *Service) Execute(dto entities.PlanetCreateDto) communication.Response {
 	service.Logger.Info(Namespace.Concat("Execute"), "")
 
 	comm := communication.New()
@@ -62,23 +50,14 @@ func (service *Service) Execute(dto Dto) communication.Response {
 }
 
 func getFilmApparences(name string) (apparences int, err error) {
-	var baseUrl = "https://swapi.dev/api/"
+	var baseUrl = searchUrl + name
 
-	ctx, execTimeOut := context.WithTimeout(context.Background(), time.Second*60)
-	defer execTimeOut()
+	response, _ := httphelper.GetWithCtx(baseUrl)
 
-	request, err := http.NewRequestWithContext(ctx, "GET", baseUrl+"planets/?search="+name+"&format=json", nil)
+	if response.StatusCode == 200 {
+		var ParseResp entities.FilmsResponseBody
 
-	if err != nil {
-		return 0, err
-	}
-
-	if resp, err := http.DefaultClient.Do(request); err != nil {
-		return 0, err
-	} else if resp.StatusCode == 200 {
-		var ParseResp ResponseBody
-
-		httphelper.GetBody(resp.Body, &ParseResp)
+		httphelper.GetBody(response.Body, &ParseResp)
 
 		if len(ParseResp.Results) == 1 {
 			return len(ParseResp.Results[0].Films), nil
@@ -86,6 +65,6 @@ func getFilmApparences(name string) (apparences int, err error) {
 			return 0, nil
 		}
 	} else {
-		return 0, errors.New("Request Error code:" + strconv.Itoa(resp.StatusCode))
+		return 0, errors.New("Request Error code:" + strconv.Itoa(response.StatusCode))
 	}
 }
