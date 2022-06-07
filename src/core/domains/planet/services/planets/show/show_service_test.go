@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/golang/mock/gomock"
-	"gitlab.internal.b2w.io/team/a-tech/star-wars/mock"
+	"gitlab.internal.b2w.io/team/a-tech/star-wars/mocks"
 	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/core/domains/planet/entities"
 	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/shared/tools/communication"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,16 +19,16 @@ func TestCreateService(t *testing.T) {
 	useCases := map[string]struct {
 		urlParamId       string
 		expectedResponse communication.Response
-		prepare          func(repostitoryMock *mock.MockIPlanetRepository, loggerMock *mock.MockILoggerProvider)
+		prepare          func(repostitoryMock *mocks.MockIPlanetRepository, loggerMock *mocks.MockILoggerProvider)
 	}{
-		"success": {
+		"success: should return status 200": {
 			urlParamId: "1",
 			expectedResponse: communication.Response{
 				Status:  200,
 				Code:    comm.Mapping["success"].Code,
 				Message: comm.Mapping["success"].Message,
 			},
-			prepare: func(repostitoryMock *mock.MockIPlanetRepository, loggerMock *mock.MockILoggerProvider) {
+			prepare: func(repostitoryMock *mocks.MockIPlanetRepository, loggerMock *mocks.MockILoggerProvider) {
 				expectedData := entities.Planet{
 					ID:             "1",
 					Name:           "testName",
@@ -51,7 +51,7 @@ func TestCreateService(t *testing.T) {
 				Code:    comm.Mapping["not_found"].Code,
 				Message: comm.Mapping["not_found"].Message,
 			},
-			prepare: func(repostitoryMock *mock.MockIPlanetRepository, loggerMock *mock.MockILoggerProvider) {
+			prepare: func(repostitoryMock *mocks.MockIPlanetRepository, loggerMock *mocks.MockILoggerProvider) {
 				expectedData := entities.Planet{}
 
 				repostitoryMock.EXPECT().GetById(gomock.Any()).Return(expectedData, mongo.ErrNoDocuments)
@@ -66,7 +66,7 @@ func TestCreateService(t *testing.T) {
 				Code:    comm.Mapping["error_list"].Code,
 				Message: comm.Mapping["error_list"].Message,
 			},
-			prepare: func(repostitoryMock *mock.MockIPlanetRepository, loggerMock *mock.MockILoggerProvider) {
+			prepare: func(repostitoryMock *mocks.MockIPlanetRepository, loggerMock *mocks.MockILoggerProvider) {
 				expectedData := entities.Planet{}
 
 				repostitoryMock.EXPECT().GetById(gomock.Any()).Return(expectedData, errors.New("error"))
@@ -82,8 +82,8 @@ func TestCreateService(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
-			repository := mock.NewMockIPlanetRepository(ctrl)
-			logger := mock.NewMockILoggerProvider(ctrl)
+			repository := mocks.NewMockIPlanetRepository(ctrl)
+			logger := mocks.NewMockILoggerProvider(ctrl)
 
 			useCase.prepare(repository, logger)
 
