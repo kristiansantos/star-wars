@@ -26,7 +26,7 @@ func (service *Service) Execute(id string) communication.Response {
 		return comm.Response(200, "success", document)
 	case mongo.ErrNoDocuments:
 		service.Logger.Error(Namespace.Concat("Execute", "GetById"), err.Error())
-		return comm.ResponseError(404, "Not Found", err)
+		return comm.ResponseError(404, "not_found", err)
 	default:
 		service.Logger.Error(Namespace.Concat("Execute", "GetById"), err.Error())
 		return comm.ResponseError(400, "error_list", err)
