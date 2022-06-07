@@ -3,6 +3,7 @@ package create
 import (
 	"context"
 	"errors"
+	"net/http"
 	"strconv"
 
 	"gitlab.internal.b2w.io/team/a-tech/star-wars/src/core/domains/planet/entities"
@@ -65,20 +66,25 @@ func (service *Service) Execute(dto Dto) communication.Response {
 
 func getFilmApparences(name string) (int, error) {
 	var baseUrl = searchUrl + name
+	var ParseResp FilmsResponseBody
 
-	response, _ := httphelper.GetWithTimeout(baseUrl)
+	response, requestError := httphelper.GetWithTimeout(baseUrl)
 
-	if response.StatusCode == 200 {
-		var ParseResp FilmsResponseBody
-
-		httphelper.GetBody(response.Body, &ParseResp)
-
-		if len(ParseResp.Results) == 1 {
-			return len(ParseResp.Results[0].Films), nil
-		} else {
-			return 0, nil
-		}
-	} else {
-		return 0, errors.New("Request Error code:" + strconv.Itoa(response.StatusCode))
+	if requestError != nil {
+		return 0, errors.New("Request Error code: " + strconv.Itoa(http.StatusInternalServerError))
 	}
+
+	httphelper.GetBody(response.Body, &ParseResp)
+	defer response.Body.Close()
+
+	if response.StatusCode != 200 {
+		return 0, errors.New("Request Error code: " + strconv.Itoa(response.StatusCode))
+	}
+
+	if len(ParseResp.Results) == 1 {
+		return len(ParseResp.Results[0].Films), nil
+	} else {
+		return 0, nil
+	}
+
 }
