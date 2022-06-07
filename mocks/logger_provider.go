@@ -2,7 +2,7 @@
 // Source: ./src/shared/providers/logger/logger_provider.go
 
 // Package mock is a generated GoMock package.
-package mock
+package mocks
 
 import (
 	reflect "reflect"
