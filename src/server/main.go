@@ -32,8 +32,6 @@ func (s *Server) Run(cfg config.Config, log logger.ILoggerProvider) error {
 	log.Info("server.main.Run", fmt.Sprintf("Environment: %s", cfg.Environment))
 
 	//Mongo db conection
-
-	// perguntar sobre a linha abaixo
 	ctx := context.TODO()
 
 	connection := mongodb.New(ctx)

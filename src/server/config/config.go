@@ -26,7 +26,6 @@ type Config struct {
 	Application Application
 }
 
-// perguntar sobre a linha abaixo
 var Instance *Config = nil
 
 func ReadConfigFromEnv(environment string) (Config, error) {
@@ -38,7 +37,6 @@ func ReadConfigFromEnv(environment string) (Config, error) {
 
 	cfg.Environment = environment
 
-	// essa tbm
 	Instance = &cfg
 
 	return cfg, nil
