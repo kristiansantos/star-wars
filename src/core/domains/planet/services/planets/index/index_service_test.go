@@ -53,7 +53,7 @@ func TestIndexService(t *testing.T) {
 				loggerMock.EXPECT().Info(gomock.Any(), gomock.Any())
 				loggerMock.EXPECT().Error(gomock.Any(), gomock.Any()).AnyTimes()
 			},
-		}, "error: should return status 400 if error to find documents in database": {
+		}, "error: should return status 400 when error to find documents in database": {
 			expectedResponse: communication.Response{
 				Status:  400,
 				Code:    comm.Mapping["error_list"].Code,
