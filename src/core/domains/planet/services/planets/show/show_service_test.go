@@ -32,8 +32,8 @@ func TestCreateService(t *testing.T) {
 				expectedData := entities.Planet{
 					ID:             "1",
 					Name:           "testName",
-					Climate:        "testName",
-					Ground:         "testName",
+					Climate:        "testClimate",
+					Ground:         "testGround",
 					FilmApparences: 5,
 					CreatedAt:      time.Now(),
 					UpdatedAt:      time.Now(),

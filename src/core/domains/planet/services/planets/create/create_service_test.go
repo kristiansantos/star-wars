@@ -23,8 +23,8 @@ func TestCreateService(t *testing.T) {
 		"success: should return status 200": {
 			inputData: Dto{
 				Name:    "testName",
-				Climate: "testName",
-				Ground:  "testName",
+				Climate: "testClimate",
+				Ground:  "testGround",
 			},
 			expectedResponse: communication.Response{
 				Status:  201,
@@ -35,8 +35,8 @@ func TestCreateService(t *testing.T) {
 				expectedData := entities.Planet{
 					ID:             "1",
 					Name:           "testName",
-					Climate:        "testName",
-					Ground:         "testName",
+					Climate:        "testClimate",
+					Ground:         "testGround",
 					FilmApparences: 5,
 					CreatedAt:      time.Now(),
 					UpdatedAt:      time.Now(),
@@ -50,8 +50,8 @@ func TestCreateService(t *testing.T) {
 		}, "Error: should return status 400 when database save return error": {
 			inputData: Dto{
 				Name:    "testName",
-				Climate: "testName",
-				Ground:  "testName",
+				Climate: "testClimate",
+				Ground:  "testGround",
 			},
 			expectedResponse: communication.Response{
 				Status:  400,
