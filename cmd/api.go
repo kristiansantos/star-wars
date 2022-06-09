@@ -29,7 +29,7 @@ var (
 )
 
 func run(cmd *cobra.Command, args []string) {
-	if err := godotenv.Load("./environments/" + environment + ".env"); err != nil {
+	if err := godotenv.Load("./environments/.env." + environment); err != nil {
 		panic(err)
 	}
 

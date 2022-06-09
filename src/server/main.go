@@ -42,7 +42,6 @@ func (s *Server) Run(cfg config.Config, log logger.ILoggerProvider) error {
 	}
 
 	//Start server with config
-
 	handlerDependencies := handlers.Dependencies{Logger: log}
 
 	router := routes.NewRoutes(handlers.NewHandler(handlerDependencies))

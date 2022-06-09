@@ -41,7 +41,3 @@ func ReadConfigFromEnv(environment string) (Config, error) {
 
 	return cfg, nil
 }
-
-func pegar() {
-
-}
